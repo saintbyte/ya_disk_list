@@ -12,9 +12,12 @@ SETTINGS = {
     "YANDEX_CLIENT_ID": os.environ.get("YANDEX_CLIENT_ID", False),
     "DEVICE_ID": os.environ.get("DEVICE_ID", False),
     "DEVICE_NAME": os.environ.get("DEVICE_NAME", False),
+    "ITEMS_LITIT": os.environ.get("ITEMS_LITIT", 100),
+    "OUTPUT_CSV_FILENAME": os.environ.get("OUTPUT_CSV_FILENAME", "1.csv"),
+    "YA_DISK_ROOT": os.environ.get("YA_DISK_ROOT", "disk:/"),
 }
+
 TOKEN_FILE = ".token"
-ITEMS_LITIT = 100
 
 
 def has_authtoken() -> bool:
@@ -64,7 +67,7 @@ def go_auth():
 def get_files_list(yadisk_path, token, offset=0):
     headers = {"Accept": "application/json", "Authorization": f"OAuth {token}"}
     params = {
-        "limit": ITEMS_LITIT,
+        "limit": SETTINGS["ITEMS_LITIT"],
         "offset": offset,
         "media_type": "image",
     }
@@ -81,7 +84,7 @@ def get_list(path, token):
     while True:
         print(f"page:{page}")
         try:
-            offset = page * ITEMS_LITIT
+            offset = page * SETTINGS["ITEMS_LITIT"]
             page_result = get_files_list(path, token, offset)
             page = page + 1
         except Exception as e:
@@ -90,11 +93,7 @@ def get_list(path, token):
         items = page_result["items"]
         if not items:
             return result
-        print(page_result)
         result = result + page_result["items"]
-    from pprint import pprint
-
-    pprint(result)
 
 
 def main():
@@ -104,8 +103,8 @@ def main():
     if not has_authtoken():
         auth()
     token = get_token()
-    result = get_list("disk:/", token)
-    fh = open("1.csv", "w")
+    result = get_list(SETTINGS["YA_DISK_ROOT"], token)
+    fh = open(SETTINGS["OUTPUT_CSV_FILENAME"], "w")
     for file in result:
         s = f"{file['path']};{file['name']};{file['size']};{file['sha256']};\n"
         fh.write(s)

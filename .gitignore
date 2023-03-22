@@ -5,3 +5,8 @@ __pycache__
 .env
 .token
 1.csv
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/ya_disk_list.iml
