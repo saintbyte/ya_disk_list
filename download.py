@@ -19,11 +19,11 @@ def main():
         description="Download image from ya disk",
         epilog="may The Force be with you!")
     parser.add_argument('filename', nargs=1, type=argparse.FileType('r', encoding='UTF-8'))
-    parser.add_argument('limit', nargs=1, type=int)
     parser.add_argument('offset', nargs=1, type=int, default=0)
+    parser.add_argument('limit', nargs=1, type=int)
     parser.add_argument('to_dir', nargs=1, type=pathlib.Path)
-    parser.parse_args()
-    print(parser.filename)
+    args = parser.parse_args()
+    print(args.filename)
     settings: dict = get_settings()
     if not settings["YANDEX_CLIENT_ID"]:
         print("create .env file use .env-example as example")
@@ -32,7 +32,9 @@ def main():
         auth(settings)
     token = get_token()
     repo = CsvImageListRepository(settings=settings)
-    repo.save_image_list(result)
+    files = repo.get_list(args.offset[0], args.limit[0])
+    for index, file in enumerate(files):
+        print(index, file)
 
 
 if __name__ == "__main__":
