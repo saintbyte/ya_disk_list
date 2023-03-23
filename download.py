@@ -60,7 +60,11 @@ def main():
 
     for index, file in enumerate(files):
         print(f"{index}) download: {file['path']}")
-        download(file["path"], destination_dir.joinpath(file["name"]), token)
+        try:
+            download(file["path"], destination_dir.joinpath(file["name"]), token)
+        except FileNotFoundError:
+            print("FileNotFoundError")
+            continue
 
 
 if __name__ == "__main__":
