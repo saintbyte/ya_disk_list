@@ -3,11 +3,11 @@ import os
 
 from dotenv import load_dotenv
 
+from repositories.csv_list import CsvImageListRepository
 from ya_disk.auth import auth
 from ya_disk.list import get_list
 from ya_disk.token import get_token
 from ya_disk.token import has_authtoken
-from repositories.csv_list import CsvImageListRepository
 
 load_dotenv()
 
@@ -24,7 +24,7 @@ def get_settings() -> dict:
         "ITEMS_LIMIT": int(os.environ.get("ITEMS_LIMIT", 100)),
         "OUTPUT_CSV_FILENAME": os.environ.get("OUTPUT_CSV_FILENAME", "1.csv"),
         "YA_DISK_ROOT": os.environ.get("YA_DISK_ROOT", "disk:/"),
-        "DEBUG": os.environ.get("DEBUG", 'False').lower() in ('true', '1', 't'),
+        "DEBUG": os.environ.get("DEBUG", "False").lower() in ("true", "1", "t"),
     }
 
 

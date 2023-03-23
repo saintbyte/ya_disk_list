@@ -10,3 +10,5 @@ __pycache__
 /.idea/vcs.xml
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/ya_disk_list.iml
+*_*/*.jpg
+*_*/*.JPG
