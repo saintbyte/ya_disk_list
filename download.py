@@ -4,7 +4,7 @@ import pathlib
 
 from dotenv import load_dotenv
 
-from main import get_settings
+from repositories.settings import Settings
 from repositories.csv_list import CsvImageListRepository
 from ya_disk.auth import auth
 from ya_disk.download import download
@@ -48,7 +48,7 @@ def main():
     args = parser.parse_args()
     destination_dir = pathlib.Path(args.to_dir[0])
     destination_dir.mkdir(mode=0o777, parents=True, exist_ok=True)
-    settings: dict = get_settings()
+    settings: dict = Settings.get_settings()
     if not settings["YANDEX_CLIENT_ID"]:
         print("create .env file use .env-example as example")
         quit()
